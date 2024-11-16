@@ -7,3 +7,6 @@ DateTime==5.5
 schedule==1.2.2
 mplcyberpunk==0.7.1
 colorama==0.4.6
+Flask==3.0.3
+flask_mail==0.10.0
+itsdangerous==2.2.0
