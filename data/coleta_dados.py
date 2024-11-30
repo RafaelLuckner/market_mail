@@ -57,7 +57,7 @@ def buscar_dados_diarios():
         dados_diarios = dados_diarios.reset_index()
         count = count +1
         try:
-            print(f'Coletados Dados Diarios da Ação {dados_diarios['acao'][0]}')
+            print(f"Coletados Dados Diarios da Ação {dados_diarios['acao'][0]}")
         except:
             return 
         print(f'Total de ações: {count}')
@@ -79,6 +79,5 @@ def buscar_dados_diarios():
     dados_end_day.to_csv('df_day.csv', index=False)
     
 
-        
 buscar_dados_diarios()
 
