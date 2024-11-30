@@ -115,7 +115,7 @@ def mensagem(df1, lista_acoes):
 
         frase = frase + result + val
 
-    frase = "Variação das ações selecionadas:\n" + frase + f'\nAtualizado: {df1['Datetime'].iloc[-1]}'
+    frase = "Variação das ações selecionadas:\n" + frase + f"\nAtualizado: {df1['Datetime'].iloc[-1]}"
     return frase
 
 
