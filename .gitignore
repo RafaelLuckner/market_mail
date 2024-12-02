@@ -169,4 +169,4 @@ data/comparacao_de_acoes.png
 .python-version
 de/
 plsdf.py
-envio_email/env
+envio_email/.env

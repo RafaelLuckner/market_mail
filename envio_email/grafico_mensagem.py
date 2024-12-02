@@ -119,7 +119,7 @@ def mensagem(df1, lista_acoes):
     return frase
 
 
-df = pd.read_csv('df_day.csv', parse_dates=['Datetime'])
+df = pd.read_csv('../data/df_day.csv', parse_dates=['Datetime'])
 
 lista_acoes = ['VALE3','BBSE3', 'CSAN3', 'RAIZ4', 'BRBI11', 'BBAS3', 'SAPR4', 'SAPR11', 'TRPL4', 'RANI3', 'TAEE11']
 # lista_acoes = ['VALE3', 'SAPR4', 'BBAS3', 'TRPL4']
