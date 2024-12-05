@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market-Mail - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --sidebar-width: 240px;
+            --header-height: 60px;
+            --primary: #1a73e8;
+            --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
+        }
+
+        body {
+            display: flex;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--sidebar-bg);
+            padding: 1rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-logo {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+
+        .btn {
+            width: 50%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            background-color: #002855;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: ease-in-out .3s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            transition: ease-in-out .3s;
+        }
+
+        .sidebar-logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            position: relative;
+            left: 33px;
+        }
+
+        .nav-item {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: var(--header-height);
+            background: white;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 0.875rem;
+            width: 100%;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .dashboard-grid {
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        #login-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        #login-form input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+        #login-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1a73e8;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        /* Estilos do componente de busca de ações */
+        .stock-search-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+        }
+
+        .stock-search-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        .stock-search-input {
+            width: 100%;
+            margin-top: 27px;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .stock-search-input:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+        }
+
+        .selected-stocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stock-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1e40af;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+        }
+
+        .stock-tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0.25rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .stock-tag button:hover {
+            opacity: 1;
+        }
+
+        .stock-list {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .stock-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .no-results {
+            padding: 1rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 0.5rem;
+            }
+
+            .sidebar-logo span,
+            .nav-item span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            .search-bar {
+                width: 200px;
+            }
+
+            .stock-search-container {
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+           <img src="WhatsApp-Image-2024-12-05-at-19.37.59.png" alt="">
+        </div>
+        <nav>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="search-bar">
+                <i class="fas fa-search text-gray-400"></i>
+                <input type="text" placeholder="Buscar...">
+            </div>
+            
+            <div class="user-menu">
+                <i class="far fa-bell"></i>
+                <i class="far fa-user-circle"></i>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="stock-search-container">
+                <div class="stock-search-content">
+                    <input type="text" class="stock-search-input" placeholder="Buscar ações..." id="stockSearchInput">
+                    <button class="btn" onclick="saveLocal()">Enviar</button>
+                </div>
+                <div class="selected-stocks" id="selectedStocks"></div>
+                <div class="stock-list" id="stockList"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Lista de ações disponíveis
+        const stocks = [
+            
+"VALE3 - Vale S.A.","BBSE3 - BB Seguridade Participações S.A.","CSAN3 - Cosan S.A.","RAIZ4 - Raízen S.A.","BRBI11 - Bradesco Fundo de Investimento Imobiliário","BBAS3 - Banco do Brasil S.A.","SAPR4 - Sanepar (Companhia de Saneamento do Paraná)","SAPR11 - Sanepar (Companhia de Saneamento do Paraná)","TRPL4 - Transmissão Paulista (Cteep)","RANI3 - Celulose Irani S.A.","TAEE11 - Taesa (Transmissora Aliança de Energia Elétrica S.A.)","ABEV3.SA - Ambev S.A.","ALPA4.SA - Alpargatas S.A.","ASAI3.SA - Assaí Atacadista (Sendas Distribuidora S.A.)","AZUL4.SA - Azul S.A.","B3SA3.SA - B3 S.A. (Brasil, Bolsa, Balcão)","BBDC3.SA - Banco Bradesco S.A.","BBDC4.SA - Banco Bradesco S.A.","BEEF3.SA - Minerva S.A.","BPAC11.SA - Banco BTG Pactual S.A.","BRAP4.SA - Bradespar S.A.","BRFS3.SA - BRF S.A.","BRKM5.SA - Braskem S.A.","CASH3.SA - Méliuz S.A.","CCRO3.SA - CCR S.A.","CMIG4.SA - CEMIG (Companhia Energética de Minas Gerais)","CPFE3.SA - CPFL Energia S.A.","CRFB3.SA - Carrefour Brasil","CVCB3.SA - CVC Brasil Operadora e Agência de Viagens S.A.","CYRE3.SA - Cyrela Brazil Realty S.A.","DXCO3.SA - Dexco S.A.","ECOR3.SA - EcoRodovias Infraestrutura e Logística S.A.","EGIE3.SA - Engie Brasil Energia S.A.","ELET3.SA - Eletrobras (Centrais Elétricas Brasileiras S.A.)","ELET6.SA - Eletrobras (Centrais Elétricas Brasileiras S.A.)","EMBR3.SA - Embraer S.A.","ENEV3.SA - Eneva S.A.","ENGI11.SA - Energisa S.A.","EQTL3.SA - Equatorial Energia S.A.","EZTC3.SA - EZTEC Empreendimentos e Participações S.A.","GGBR4.SA - Gerdau S.A.","GOAU4.SA - Metalúrgica Gerdau S.A.","GOLL4.SA - Gol Linhas Aéreas Inteligentes S.A.","HAPV3.SA - Hapvida Participações e Investimentos S.A.","IGTI11.SA - Iguatemi S.A.","IRBR3.SA - IRB Brasil Resseguros S.A.","ITSA4.SA - Itaúsa S.A.","ITUB4.SA - Itaú Unibanco Holding S.A.","JBSS3.SA - JBS S.A.","JHSF3.SA - JHSF Participações S.A.","KLBN11.SA - Klabin S.A.","LREN3.SA - Lojas Renner S.A.","MGLU3.SA - Magazine Luiza S.A.","MRFG3.SA - Marfrig Global Foods S.A.","MRVE3.SA - MRV Engenharia e Participações S.A.","MULT3.SA - Multiplan Empreendimentos Imobiliários S.A.","NTCO3.SA - Natura &Co Holding S.A.","HYPE3.SA - Hypera S.A.","PETR3.SA - Petrobras (Petróleo Brasileiro S.A.)","PETR4.SA - Petrobras (Petróleo Brasileiro S.A.)","POSI3.SA - Positivo Tecnologia S.A.","PRIO3.SA - PetroRio S.A.","QUAL3.SA - Qualicorp Consultoria e Corretora de Seguros S.A.","RADL3.SA - Raia Drogasil S.A.","RAIL3.SA - Rumo S.A.","RENT3.SA - Localiza Rent a Car S.A.","SANB11.SA - Santander Brasil","SBSP3.SA - Sabesp (Companhia de Saneamento Básico do Estado de São Paulo)","SUZB3.SA - Suzano S.A.","TOTS3.SA - TOTVS S.A.","UGPA3.SA - Ultrapar Participações S.A.","USIM5.SA - Usiminas S.A."
+        ];
+        
+        // Estado das ações selecionadas
+        let selectedStocks = [];
+
+        // Elementos do DOM
+        const stockList = document.getElementById('stockList');
+        const selectedStocksContainer = document.getElementById('selectedStocks');
+        const searchInput = document.getElementById('stockSearchInput');
+        const MAX_SELECTIONS = 6;
+
+        // Função para renderizar a lista de ações
+        function renderStockList(searchTerm = '') {
+            const filteredStocks = stocks.filter(stock => 
+                stock.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                !selectedStocks.includes(stock)
+            );
+
+            if (filteredStocks.length === 0) {
+                stockList.innerHTML = `
+                    <div class="no-results">
+                        Nenhuma ação encontrada
+                    </div>
+                `;
+                return;
+            }
+
+            stockList.innerHTML = filteredStocks
+                .map(stock => `
+                    <div class="stock-item" onclick="selectStock('${stock}')">
+                        ${stock}
+                    </div>
+                `).join('');
+        }
+
+        // Função para renderizar as ações selecionadas
+        function renderSelectedStocks() {
+            selectedStocksContainer.innerHTML = selectedStocks
+                .map(stock => `
+                    <div class="stock-tag">
+                        ${stock}
+                        <button onclick="removeStock('${stock}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+        }
+
+        // Função para selecionar uma ação
+        function selectStock(stock) {
+            if (selectedStocks.length >= MAX_SELECTIONS) {
+            alert('Você pode selecionar no máximo 6 ações!');
+            return;
+    }
+            if (!selectedStocks.includes(stock)) {
+                selectedStocks.push(stock);
+                renderSelectedStocks();
+                renderStockList(searchInput.value);
+            }
+        }
+
+        // Função para remover uma ação selecionada
+        function removeStock(stock) {
+            selectedStocks = selectedStocks.filter(s => s !== stock);
+            renderSelectedStocks();
+            renderStockList(searchInput.value);
+        }
+
+        // Evento de busca
+        searchInput.addEventListener('input', (e) => {
+            renderStockList(e.target.value);
+        });
+
+        // Inicialização
+        renderStockList();
+    </script>
+</body>
+</html>

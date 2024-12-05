@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            background-color: #002855;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #001d3d;
+        }
+        .link {
+            margin-top: 10px;
+            display: inline-block;
+            color: #002855;
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .link:hover {
+            color: #001d3d;
+        }
+        .hidden {
+            display: none;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container" class="container">
+        <h2>Login</h2>
+        <input id="login-user" type="text" placeholder="Usuário" />
+        <input id="login-pass" type="password" placeholder="Senha" />
+        <div id="login-error" class="error-message hidden"></div>
+        <button onclick="login()">Logar</button>
+        <span class="link" onclick="showRegisterStep1()">Não tem login? Cadastre-se</span>
+    </div>
+
+    <div id="register-step1-container" class="container hidden">
+        <h2>Insira seu e-mail para verificação</h2>
+        <input id="register-email" type="email" placeholder="Email" />
+        <div id="email-error" class="error-message hidden"></div>
+        <button onclick="goToStep2()">Avançar</button>
+    </div>
+
+    <div id="register-step2-container" class="container hidden">
+        <h2>Insira o código enviado em seu e-mail</h2>
+        <input id="verification-code" type="text" placeholder="Código enviado" />
+        <div id="code-error" class="error-message hidden"></div>
+        <button onclick="verifyCode()">Avançar</button>
+    </div>
+
+    <div id="register-step3-container" class="container hidden">
+        <h2>Crie sua senha</h2>
+        <input id="register-password" type="password" placeholder="Senha" />
+        <input id="register-confirm-password" type="password" placeholder="Confirme a senha" />
+        <div id="password-error" class="error-message hidden"></div>
+        <button onclick="completeRegistration()">Finalizar</button>
+    </div>
+
+    <!-- ANOTAÇÃO: AQUI VOCÊ DEVE COLOCAR O CÓDIGO DA SUA PRÓXIMA TELA APÓS O LOGIN E O CADASTRO -->
+    <!-- Exemplo de tela após o login e cadastro -->
+    <div id="next-site-container" class="container hidden">
+        <h2>Bem-vindo ao seu painel!</h2>
+        <p>Aqui você pode acessar suas funcionalidades e informações.</p>
+        <button onclick="goToProfile()">Ver Perfil</button>
+        <button onclick="goToSettings()">Configurações</button>
+        <button onclick="logout()">Sair</button>
+    </div>
+    <!-- Fim do exemplo -->
+
+    <script>
+        function showRegisterStep1() {
+            hideAllContainers();
+            clearErrors();
+            document.getElementById('register-step1-container').classList.remove('hidden');
+        }
+
+        function goToStep2() {
+            const email = document.getElementById('register-email').value;
+            const emailError = document.getElementById('email-error');
+            if (!email) {
+                emailError.textContent = 'Por favor, insira um email válido.';
+                emailError.classList.remove('hidden');
+                return;
+            }
+            emailError.classList.add('hidden');
+            hideAllContainers();
+            clearErrors();
+            document.getElementById('register-step2-container').classList.remove('hidden');
+        }
+
+        function verifyCode() {
+            const code = document.getElementById('verification-code').value;
+            const codeError = document.getElementById('code-error');
+            if (code !== '1234') {
+                codeError.textContent = 'Código incorreto.';
+                codeError.classList.remove('hidden');
+                return;
+            }
+            codeError.classList.add('hidden');
+            hideAllContainers();
+            clearErrors();
+            document.getElementById('register-step3-container').classList.remove('hidden');
+        }
+
+        function completeRegistration() {
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const passwordError = document.getElementById('password-error');
+
+            if (!password || password !== confirmPassword) {
+                passwordError.textContent = 'As senhas não coincidem ou estão vazias.';
+                passwordError.classList.remove('hidden');
+                return;
+            }
+            passwordError.classList.add('hidden');
+            alert('Cadastro concluído com sucesso!');
+            hideAllContainers();
+            clearErrors();
+            document.getElementById('login-container').classList.remove('hidden');
+        }
+
+        function login() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            const loginError = document.getElementById('login-error');
+            
+
+            if (!user || !pass) {
+                loginError.textContent = 'Usuário ou senha inválidos.';
+                loginError.classList.remove('hidden');
+                return;
+            }
+            loginError.classList.add('hidden');
+            alert(`Bem-vindo, ${user}!`);
+
+            // Após o login, exibe a tela do próximo site (exemplo de painel)
+            // hideAllContainers();
+            window.location.href = "index2teste.html"
+            
+        }
+
+        function hideAllContainers() {
+            document.querySelectorAll('.container').forEach(container => {
+                container.classList.add('hidden');
+            });
+        }
+
+        function clearErrors() {
+            // Limpa todas as mensagens de erro
+            const errors = document.querySelectorAll('.error-message');
+            errors.forEach(error => {
+                error.classList.add('hidden');
+                error.textContent = '';
+            });
+        }
+
+        function goToProfile() {
+            alert("Aqui você visualiza o seu perfil.");
+        }
+
+        function goToSettings() {
+            alert("Aqui você pode alterar as configurações.");
+        }
+
+        function logout() {
+            // Limpa a sessão e redireciona para a tela de login
+            hideAllContainers();
+            document.getElementById('login-container').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+
+
